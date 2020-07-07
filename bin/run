@@ -1,1 +1,11 @@
 #!/usr/bin/env ruby
+
+# 3 lines of code:
+# - shebang line: tells the interpreter to use Ruby
+# - require your environment
+# - start your program
+
+require_relative "../config/environment"
+
+new_cli_instance = CLI.new
+new_cli_instance.start
