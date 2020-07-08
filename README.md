@@ -1,4 +1,4 @@
-# ExampleCliWithZomato
+# Example Cli With Zomato
 
 Welcome to Boise Restaurant Finder!  We're using the Zomato API to show you some Boise restaurants!  Enjoy!
 
@@ -9,8 +9,10 @@ Clone this repository
 ## Usage
 
 From your command prompt,
-`cd` into the parent director after cloning.
+`cd` into the parent director after cloning
+
 run `bundle install`
+
 run `bin/run`
 
 ## Contributing
