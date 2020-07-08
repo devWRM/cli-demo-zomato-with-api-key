@@ -1,4 +1,4 @@
-class Restaurant
+class ExampleCliWithZomato::Restaurant
   attr_accessor :name, :url, :address, :locality, :city, :zipcode, :cuisines, :rating
 
   @@all = []
