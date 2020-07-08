@@ -1,8 +1,10 @@
 # get data from the internet using scraping or hitting an API
 class API
-  def get_info
+  BASE_URL = "https://developers.zomato.com/api/v2.1"
+
+  def get_city_restaurants(entity_id=664, entity_type="city")
     response = HTTParty.get(
-      "https://developers.zomato.com/api/v2.1/categories",
+      "#{BASE_URL}/search?entity_id=#{entity_id}&entity_type=#{entity_type}",
       {
         headers: {
           "Accept": "application/json",
@@ -10,7 +12,21 @@ class API
         }
       }
     )
-    binding.pry
+    restaurants_array = response["restaurants"]
+    restaurants_array.each do |restaurant_hash|
+      restaurant_hash["restaurant"]
+      info_hash = {
+        name: restaurant_hash["restaurant"]["name"],
+        url: restaurant_hash["restaurant"]["url"],
+        address: restaurant_hash["restaurant"]["location"]["address"],
+        locality: restaurant_hash["restaurant"]["location"]["locality"],
+        city: restaurant_hash["restaurant"]["location"]["city"],
+        zipcode: restaurant_hash["restaurant"]["location"]["zipcode"],
+        cuisines: restaurant_hash["restaurant"]["cuisines"],
+        rating: restaurant_hash["restaurant"]["user_rating"]["aggregate_rating"]
+      }
+      Restaurant.new(info_hash)
+    end
   end
 end
 
