@@ -1,9 +1,10 @@
 # primary job of the CLI class is to provide the user interface - `gets` and `puts`
-class CLI
-  attr_reader :api, :input
+class ExampleCliWithZomato::CLI
+  attr_reader :api
+  attr_accessor :input
 
   def initialize
-    @api = API.new
+    @api = ExampleCliWithZomato::API.new
     @input = ""
   end
 
@@ -28,14 +29,55 @@ class CLI
   def show_main_menu
     show_restaurant_list
     restaurant_list_prompt
-    puts "Type 1 to continue"
-    puts "Type 2 to exit"
+    puts "Type x to exit and any other key to continue"
+    space
+    get_user_input
+    if input.downcase == "x"
+      goodbye
+    else
+      show_main_menu
+    end
   end
 
   def restaurant_list_prompt
-    puts "Type the number of the restaurant you'd like to see deatails for."
+    puts "Type the number of the restaurant you'd like to see details for."
     get_user_input
-    
+    validate_input
+    # show requested data
+    # make a method to do this
+    # display_restaurant_details
+    # right now, @input holds the user input - in string format
+    # turn the string into an integer and offset the index
+    index = input.to_i - 1
+    restaurant = ExampleCliWithZomato::Restaurant.all[index]
+    display_restaurant_details(restaurant)
+  end
+
+  def validate_input
+    # valid input needs to be between 1 and 20
+    # valid input needs to be a number (even though it will come in as a string)
+    # if it's valid, use it
+    # if it's not valid, tell the use and get new input
+    # Ruby has a method called #between?
+    while !(input.to_i >= 1 && input.to_i <= ExampleCliWithZomato::Restaurant.all.length) do
+      space
+      show_restaurant_list
+      puts "Sorry that is not valid input.  Please choose a number corresponding to a restaurant."
+      get_user_input
+      space
+    end
+  end
+
+  def display_restaurant_details(restaurant)
+    space
+    puts restaurant.name
+    puts "Locality: #{restaurant.locality}"
+    puts restaurant.address
+    puts "Website: "
+    puts restaurant.url
+    puts "Cuisines: #{restaurant.cuisines}"
+    puts "User rating: #{restaurant.rating}"
+    space
   end
 
   def get_user_input
@@ -44,7 +86,7 @@ class CLI
 
   def show_restaurant_list
     space
-    Restaurant.all.each.with_index(1) do |restaurant, index|
+    ExampleCliWithZomato::Restaurant.all.each.with_index(1) do |restaurant, index|
       puts "#{index}. #{restaurant.name}"
     end
     space
@@ -58,5 +100,11 @@ class CLI
 
   def space
     puts ""
+  end
+
+  def goodbye
+    space
+    puts "Thanks for using this app!  Enjoy Boise!"
+    space
   end
 end
