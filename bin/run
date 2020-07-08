@@ -7,5 +7,5 @@
 
 require_relative "../config/environment"
 
-new_cli_instance = CLI.new
+new_cli_instance = ExampleCliWithZomato::CLI.new
 new_cli_instance.start
